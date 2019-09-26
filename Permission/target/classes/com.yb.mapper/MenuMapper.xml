@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yb.mapper.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.yb.domain.Menu" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <association property="parent" javaType="com.yb.domain.Menu" columnPrefix="m_">
+      <result property="id" column="id"/>
+      <result property="text" column="text"/>
+      <result property="url" column="url"/>
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yb.domain.Menu" >
+    insert into menu (id, test, url, 
+      parent_id)
+    values (#{id,jdbcType=BIGINT}, #{test,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=BIGINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yb.domain.Menu" >
+    update menu
+    set test = #{test,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, test, url, parent_id
+    from menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+     SELECT
+      m1.id,
+      m1.text,
+      m1.url ,
+      m2.id as m_id,
+      m2.text as m_text,
+      m2.url as m_url
+      from menu as m1
+      LEFT JOIN menu as m2
+      on m2.id=m1.parent_id
+  </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yb.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.yb.domain.Role" >
+    <id column="rid" property="rid" jdbcType="BIGINT" />
+    <result column="rname" property="rname" jdbcType="VARCHAR" />
+    <result column="rnum" property="rnum" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from role
+    where rid = #{rid,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yb.domain.Role" useGeneratedKeys="true" keyProperty="rid">
+    insert into role (rid, rname, rnum
+      )
+    values (#{rid,jdbcType=BIGINT}, #{rname,jdbcType=VARCHAR}, #{rnum,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yb.domain.Role" >
+    update role
+    set rname = #{rname,jdbcType=VARCHAR},
+      rnum = #{rnum,jdbcType=VARCHAR}
+    where rid = #{rid,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select rid, rname, rnum
+    from role
+    where rid = #{rid,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select rid, rname, rnum
+    from role
+  </select>
+
+    <!--维护外键关系-->
+  <insert id="insertRoleAndPromission">
+    insert into role_promission(rid,pid) values(#{rid},#{pid})
+  </insert>
+  <!--删除外键关系-->
+  <delete id="deleteRoleAndPermission" parameterType="long">
+    delete from role_promission where rid = #{rid}
+  </delete>
+  <!--找出选中员工所对应的角色-->
+  <select id="getRoleListById" resultType="integer">
+    SELECT r.rid from employee_role as e  LEFT JOIN role as r on r.rid = e.rid where e.eid=#{id}
+  </select>
+</mapper>
