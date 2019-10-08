@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/application-mvc.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/application-mybatis.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/application-shiro.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db.properties" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/generatorConfig.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/log4j.properties" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/rebel.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/sqlMapConfig.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/bootstrap-datetimepicker.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/bootstrap-datetimepicker.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/bootstrap-datetimepicker.min.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/bootstrap-datetimepicker.min.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/bootstrap-datetimepicker.zh-CN.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/moment-with-locales.min.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/router.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/template.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/static/bootstrap-table/dist" charset="GBK" />
+  </component>
+</project>

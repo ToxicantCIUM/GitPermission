@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yb.mapper.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.yb.domain.Employee" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password"/>
+    <result column="inputtime" property="inputtime" jdbcType="TIMESTAMP" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="admin" property="admin" jdbcType="BIT" />
+    <result column="dep_id" property="depId" jdbcType="BIGINT" />
+    <!--分装department对象-->
+    <association property="department" javaType="com.yb.domain.Department" columnPrefix="d_">
+      <result property="id" column="id"></result>
+      <result property="name" column="name"></result>
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.yb.domain.Employee" useGeneratedKeys="true" keyProperty="id">
+    insert into employee (id, username,password, inputtime,
+      tel, email, state, admin, 
+      dep_id)
+    values (#{id}, #{username},#{password}, #{inputtime},
+      #{tel}, #{email}, #{state}, #{admin},
+      #{department.id})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="com.yb.domain.Employee" >
+    update employee
+    set username = #{username},
+      inputtime = #{inputtime},
+      tel = #{tel},
+      email = #{email},
+      state = #{state},
+      admin = #{admin},
+      dep_id = #{department.id}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, username, inputtime, tel, email, state, admin, dep_id
+    from employee
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+<sql id="where_sql">
+  <where>
+    <if test="keyWord != null and keyWord != ''">
+        and  e.username like concat('%',#{keyWord},'%')
+        or e.inputtime like concat('%',#{keyWord},'%')
+        or  e.email like concat('%',#{keyWord},'%')
+        or e.tel like concat('%',#{keyWord},'%')
+    </if>
+  </where>
+</sql>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select e.id, e.username, e.inputtime, e.tel,
+    e.email, e.state, e.admin,
+    d.id as d_id,d.`name` as d_name,e.password
+    from employee as e
+    LEFT JOIN department as d on e.dep_id=d.id
+    <include refid="where_sql"></include>
+  </select>
+
+    <update id="editState">
+    update employee set state=0 where id = #{id}
+  </update>
+
+  <!--保存员工与角色的关系-->
+  <insert id="saveEmployeeAndRole">
+    insert into employee_role(eid,rid) values (#{id},#{rid})
+  </insert>
+
+  <!--删除员工和角色的关系-->
+  <delete id="deleteEmployeeAndRole">
+    delete from employee_role where eid=#{id}
+  </delete>
+
+  <!--根据用户名查找用户-->
+  <select id="getEmployeeByName" resultType="com.yb.domain.Employee">
+    select * from employee where username=#{username}
+  </select>
+  <!--根据用户的id查找出用户所对应的角色-->
+    <select id="getRoleByEmpId" resultType="string">
+      SELECT r.rnum from employee_role as er
+      LEFT JOIN role as r
+      on er.rid = r.rid
+      where er.eid=#{id}
+    </select>
+  <select id="getPermissionByEmpId" resultType="string">
+      SELECT DISTINCT p.presource from role_promission as rp
+      LEFT JOIN promission as p on rp.pid = p.pid
+      where rp.rid in(SELECT rid from  employee_role where eid = #{id})
+  </select>
+  <!--获取所有的员工-->
+    <select id="getEmpList" resultMap="BaseResultMap">
+      SELECT
+      e.id,e.username,
+      e.inputtime,
+      e.tel,e.email,
+      e.state,e.admin,
+      e.`password`,
+      d.id as d_id,
+      d.`name` as d_name
+      from employee as e
+      LEFT JOIN department as d
+      on e.dep_id=d.id
+    </select>
+</mapper>
